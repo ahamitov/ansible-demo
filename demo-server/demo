@@ -1,0 +1,2 @@
+[demo]
+192.168.1.60 ansible_user=ahamitov ansible_port=2222
