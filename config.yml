@@ -1,6 +1,6 @@
 ---
 - name: Preconfig
-  hosts: demo
+  hosts: cluster
   tasks:
     - name: Установка Docker
       become: true
@@ -24,11 +24,12 @@
           ansible.builtin.apt_key:
             url: https://download.docker.com/linux/ubuntu/gpg
             state: present
+            keyring: /usr/share/keyrings/docker-archive-keyring.gpg
 
         - name: Установка стабильного репозитория
           ansible.builtin.apt_repository:
             repo: >
-              deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg]
+              deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg]
               https://download.docker.com/linux/ubuntu
               {{ ansible_distribution_release }} stable
             state: present
