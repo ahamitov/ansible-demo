@@ -14,6 +14,7 @@
           - curl
           - gnupg
           - lsb-release
+          - python3-pip
         update-cache: true
         cache_valid_time: 86400
 
@@ -58,6 +59,12 @@
         url: "https://github.com/docker/compose/releases/download/{{ page.json.tag_name }}/docker-compose-Linux-x86_64"
         dest: /usr/local/bin/docker-compose
         mode: "0755"
+
+- name: Настройка дополнительных пакетов python
+  block:
+    - name: Установка pip пакетов
+      ansible.builtin.pip:
+        name: docker
 
 - name: Завершение установки
   become: true
