@@ -3,13 +3,19 @@
   hosts: deploy
   roles:
     - role: preconfig
+      tags: preconfig
+    - role: deploy
+      test: 0
+      tags: deploy
 
 - name: Manager
   hosts: managers
   roles:
     - role: preconfig
+      tags: preconfig
 
 - name: Worker
   hosts: workers
   roles:
     - role: preconfig
+      tags: preconfig
