@@ -1,9 +1,11 @@
 ---
-- name: Циклы
-  ansible.builtin.include_tasks: inner.yml
-  loop:
-    - name: Вася
-    - name: Маша
-    - name: Катя
-  loop_control:
-    loop_var: outer_item
+- name: Создание сети
+  community.docker.docker_network:
+    name: "{{ network_name }}"
+    driver: overlay
+
+- name: Выкладка сервисов
+  ansible.builtin.include_tasks: "../services/{{ item }}/service.yml"
+  vars:
+    name: "{{ item }}"
+  loop: "{{ services }}"
