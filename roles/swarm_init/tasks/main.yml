@@ -17,11 +17,11 @@
   ansible.builtin.copy:
     dest: ./tokens/token-manager
     content: "{{ token.swarm_facts.JoinTokens.Manager }}"
-    mode: '0755'
+    mode: '0644'
 
 - name: Сохранение токена worker
   delegate_to: localhost
   ansible.builtin.copy:
     dest: ./tokens/token-worker
     content: "{{ token.swarm_facts.JoinTokens.Worker }}"
-    mode: '0755'
+    mode: '0644'
