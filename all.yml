@@ -28,12 +28,3 @@
     - role: swarm_join
       type: worker
       tags: swarm_join
-  post_tasks:
-    - name: Очистка папки tokens
-      ansible.builtin.file:
-        path: ./tokens
-        state: absent
-      ignore_errors: true
-      register: ignore_errors_register
-      delegate_to: localhost
-      tags: swarm_join
