@@ -1,0 +1,30 @@
+---
+- name: Понижаем ноду и переводим в статус drain
+  community.docker.docker_node:
+    hostname: "{{ node_name }}"
+    availability: drain
+    role: worker
+
+- name: Понижение ноды до worker
+  community.docker.docker_node:
+    hostname: "{{ node_name }}"
+
+- name: Ожидание остановки
+  delegate_to: "{{ node_name }}"
+  community.docker.docker_host_info:
+    containers: true
+  register: result
+  retries: 30
+  delay: 2
+  until: result.host_info.ContainersRunning == 0
+
+- name: Выход ноды из swarm
+  delegate_to: "{{ node_name }}"
+  community.docker.docker_swarm:
+    state: absent
+    force: true
+
+- name: Удаление записи о ноде в swarm
+  community.docker.docker_swarm:
+    state: remove
+    node_id: "{{ node_name }}"
