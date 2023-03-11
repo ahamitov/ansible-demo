@@ -5,10 +5,6 @@
     availability: drain
     role: worker
 
-- name: Понижение ноды до worker
-  community.docker.docker_node:
-    hostname: "{{ node_name }}"
-
 - name: Ожидание остановки
   delegate_to: "{{ node_name }}"
   community.docker.docker_host_info:
@@ -17,6 +13,10 @@
   retries: 30
   delay: 2
   until: result.host_info.ContainersRunning == 0
+
+# - name: Debug
+#   ansible.builtin.debug:
+#     var: result.host_info
 
 - name: Выход ноды из swarm
   delegate_to: "{{ node_name }}"

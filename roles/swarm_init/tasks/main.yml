@@ -5,22 +5,23 @@
     advertise_addr: "{{ advertise_addr }}"
   register: token
 
-- name: Сохранение токенов
-  ansible.builtin.set_fact:
-    token_manager: "{{ token.swarm_facts.JoinTokens.Manager }}"
-    token_worker: "{{ token.swarm_facts.JoinTokens.Worker }}"
-    cacheable: true
+- name: Наличие директории
+  delegate_to: localhost
+  ansible.builtin.file:
+    path: ./tokens
+    state: directory
+    mode: '0755'
 
-# - name: Сохранение токена manager
-#   delegate_to: localhost
-#   ansible.builtin.copy:
-#     dest: ./tokens/token-manager
-#     content: "{{ token.swarm_facts.JoinTokens.Manager }}"
-#     mode: '0644'
+- name: Сохранение токена manager
+  delegate_to: localhost
+  ansible.builtin.copy:
+    dest: ./tokens/token-manager
+    content: "{{ token.swarm_facts.JoinTokens.Manager }}"
+    mode: '0644'
 
-# - name: Сохранение токена worker
-#   delegate_to: localhost
-#   ansible.builtin.copy:
-#     dest: ./tokens/token-worker
-#     content: "{{ token.swarm_facts.JoinTokens.Worker }}"
-#     mode: '0644'
+- name: Сохранение токена worker
+  delegate_to: localhost
+  ansible.builtin.copy:
+    dest: ./tokens/token-worker
+    content: "{{ token.swarm_facts.JoinTokens.Worker }}"
+    mode: '0644'
